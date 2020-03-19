@@ -6,9 +6,9 @@ class Serializer:
         pass
 
     @staticmethod
-    def serialize(obj):
+    def serialize(obj: object) -> str:
         return cloudpickle.dumps(obj)
 
     @staticmethod
-    def deserialize(serialized):
+    def deserialize(serialized: str) -> object:
         return cloudpickle.loads(serialized)

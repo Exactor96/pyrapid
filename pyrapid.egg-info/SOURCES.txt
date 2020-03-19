@@ -1,0 +1,8 @@
+README.txt
+setup.py
+pyrapid/__init__.py
+pyrapid.egg-info/PKG-INFO
+pyrapid.egg-info/SOURCES.txt
+pyrapid.egg-info/dependency_links.txt
+pyrapid.egg-info/requires.txt
+pyrapid.egg-info/top_level.txt
