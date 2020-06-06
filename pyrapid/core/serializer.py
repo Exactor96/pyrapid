@@ -1,21 +1,9 @@
 import cloudpickle
 
 
-# class Serializer:
-#     def __init__(self):
-#         pass
-#
-#     @staticmethod
-#     def serialize(obj: object) -> str:
-#         return cloudpickle.dumps(obj)
-#
-#     @staticmethod
-#     def deserialize(serialized: str) -> object:
-#         return cloudpickle.loads(serialized)
-
-class Serializer(object):
+class Serializer:
     """
-    Класс сериализации
+    Класс Сериализации/Десериализации
     """
     def __new__(cls):
         """
@@ -25,14 +13,16 @@ class Serializer(object):
             cls.instance = super(Serializer, cls).__new__(cls)
         return cls.instance
 
-    def serialize(obj: object) -> str:
+    @staticmethod
+    def serialize(obj: object) -> bytes:
         """
         Сериализация объекта в байт строку
         :return:
         """
         return cloudpickle.dumps(obj)
 
-    def deserialize(serialized: str) -> object:
+    @staticmethod
+    def deserialize(serialized: bytes) -> object:
         """
         Десериализация байт сроки в объект
         :return:

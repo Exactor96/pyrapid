@@ -3,8 +3,8 @@ import socket
 import requests
 import cloudpickle
 
-BUFF = 1024 ** 2 * 10
-HOST = 'localhost'
+BUFF = 1024 * 10
+HOST = 'ip172-18-0-9-brc84ptim9m000c5ovug-8888.direct.labs.play-with-docker.com'
 PORT = 8888
 
 
@@ -54,9 +54,9 @@ def make_db(name):
     sqlite3.connect(str(name)+'.sqlite3')
 
 
-def send_func(func, args):
+def send_func(func, args, exec_type):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    transfer_dict = {'func': func, 'args': args}
+    transfer_dict = {'func': func, 'args': args, 'exec_type': exec_type}
     transfer_data = cloudpickle.dumps(transfer_dict)
     s.connect((HOST, PORT))
     s.send(transfer_data)
@@ -65,18 +65,25 @@ def send_func(func, args):
     print(result)
 
 
-async def tcp_echo_client(func, args, loop):
-    reader, writer = await asyncio.open_connection('127.0.0.1', 8888,
+async def tcp_echo_client(func, args, exec_type, loop):
+    reader, writer = await asyncio.open_connection('localhost', 8888,
                                                    loop=loop)
 
-    transfer_dict = {'func': func, 'args': args}
+    transfer_dict = {'func': func, 'args': args, 'exec_type': exec_type}
     transfer_data = cloudpickle.dumps(transfer_dict)
     writer.write(transfer_data)
     writer.close()
 
-    result_data = await reader.read(BUFF)
-    result = cloudpickle.loads(result_data)
-    print(result)
+    result_data = await reader.read(-1)
+
+    print(result_data)
+    if result_data:
+        result = cloudpickle.loads(result_data)
+        print(result)
+        return result
+    else:
+        print('empty result')
+        return None
 
 
 def count_len_web(url, delay):
@@ -109,40 +116,49 @@ def gen_factorials(start, stop, loop):
 
 async def main():
     loop = asyncio.get_event_loop()
-    tasks = [asyncio.create_task(each)
-             for each in [
-                 tcp_echo_client(factorial, (100000,), loop),
-                 tcp_echo_client(factorial, (100001,), loop),
-                 tcp_echo_client(factorial, (100002,), loop),
-                 tcp_echo_client(factorial, (100003,), loop),
-                 tcp_echo_client(factorial, (100004,), loop),
-                 tcp_echo_client(factorial, (100005,), loop),
-                 tcp_echo_client(factorial, (100006,), loop),
-                 tcp_echo_client(factorial, (100007,), loop),
-                 tcp_echo_client(factorial, (100008,), loop),
-                 tcp_echo_client(factorial, (100009,), loop),
-                 tcp_echo_client(factorial, (100010,), loop),
-                 tcp_echo_client(factorial, (100011,), loop),
-                 tcp_echo_client(factorial, (100012,), loop),
-                 tcp_echo_client(factorial, (100013,), loop),
-                 tcp_echo_client(factorial, (100014,), loop),
-                 tcp_echo_client(factorial, (100015,), loop),
-                 tcp_echo_client(factorial, (100016,), loop),
-                 tcp_echo_client(factorial, (100017,), loop),
-                 tcp_echo_client(factorial, (100018,), loop),
-                 tcp_echo_client(factorial, (100019,), loop),
-                 tcp_echo_client(factorial, (100020,), loop),
-             ]
-
-             ]
-
-    results = [await asyncio.gather(task) for task in tasks]
+    t = asyncio.create_task(tcp_echo_client(factorial, (100000,), 'THREAD', loop))
+    await asyncio.gather(t)
+    # tasks = [asyncio.create_task(each)
+    #          for each in [
+    #              tcp_echo_client(factorial, (100000,), 'THREAD', loop),
+    #              tcp_echo_client(factorial, (100001,), 'THREAD', loop),
+    #              # tcp_echo_client(colatz, (100002,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100003,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100004,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100005,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100006,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100007,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100008,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100009,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100010,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100011,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100012,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100013,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100014,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100015,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100016,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100017,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100018,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100019,), 'PROCESS', loop),
+    #              # tcp_echo_client(colatz, (100020,), 'PROCESS', loop),
+    #          ]
+    #
+    #          ]
+    #
+    # for task in tasks:
+    #     await asyncio.gather(task)
 
 if __name__ == '__main__':
-    import time
-    start = time.monotonic()
-    asyncio.run(main())
-    print(time.monotonic() - start)
+    # import time
+    # start = time.monotonic()
+    # asyncio.run(main())
+    # print(time.monotonic() - start)
+    send_func(factorial, (100000,), 'PROCESS')
+    # send_func(factorial, (100000,), 'THREAD')
+    # send_func(factorial, (100000,), 'THREAD')
+    # send_func(factorial, (100000,), 'THREAD')
+    # send_func(factorial, (100000,), 'THREAD')
+    # send_func(factorial, (100000,), 'THREAD')
 
 
     # start = time.monotonic()

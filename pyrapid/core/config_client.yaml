@@ -1,0 +1,16 @@
+clusters:
+    - cluster1: # Имя конфигурации кластера
+        hostname: "host1" # Имя хоста для подключения
+        port: 9625 # Порт
+
+    - cluster2:
+        hostname: "host2"
+        port: 8998
+
+    - cluster3:
+        hostname: "host3"
+        port: 8888
+
+    - cluster4:
+          hostname: "localhost"
+          port: 8888

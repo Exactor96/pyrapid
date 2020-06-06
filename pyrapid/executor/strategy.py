@@ -3,6 +3,8 @@ from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 import os
 
 
+
+
 class Strategy(metaclass=abc.ABCMeta):
     """
     Базовый класс стратегии
@@ -12,7 +14,7 @@ class Strategy(metaclass=abc.ABCMeta):
         pass
 
 
-class ConcurrentStrategy(Strategy):
+class MultiThreadStrategy(Strategy):
     """
     Класс конкурентного исполнения
     """
@@ -42,9 +44,14 @@ class MultiProcessStrategy(Strategy):
         self.local_kwargs = local_kwargs
         self.global_kwargs = global_kwargs
 
+    def get_process_pool(self):
+        pass
+
     def execute(self):
         """
         Функция выполнения функции в отдельном процессе
         :return:
         """
         self.process_pool.submit(self.func, **self.local_kwargs, **self.global_kwargs)
+
+

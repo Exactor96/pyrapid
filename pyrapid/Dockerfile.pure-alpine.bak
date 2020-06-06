@@ -1,4 +1,5 @@
-FROM python:3.8-slim
+FROM alpine:latest
+RUN apk add --no-cache python3 python3-dev py3-pip
 RUN mkdir /executor
 COPY async_test_server.py /executor/server.py
 COPY requirements.txt /executor/requirements.txt

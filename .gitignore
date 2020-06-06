@@ -1,6 +1,7 @@
 .idea/
 venv/
 venv38/
+venv3.8/
 build/
 dist/
 *.pyc

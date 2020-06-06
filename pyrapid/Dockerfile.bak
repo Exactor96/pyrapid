@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM python:3.8.2-alpine3.11
 RUN mkdir /executor
 COPY async_test_server.py /executor/server.py
 COPY requirements.txt /executor/requirements.txt
