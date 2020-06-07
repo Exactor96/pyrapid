@@ -1,12 +1,11 @@
 import asyncio
 import socket
-import time
 
 import requests
-from dill import dumps, loads
+from cloudpickle import dumps, loads
 
 BUFF = 1024 * 10
-#HOST = 'ip172-18-0-9-brc84ptim9m000c5ovug-8888.direct.labs.play-with-docker.com'
+
 HOST = 'localhost'
 PORT = 8888
 
@@ -68,6 +67,7 @@ def send_func(func, args, exec_type):
     result_data = s.recv(BUFF)
     result = loads(result_data)
     print(result)
+    return result
 
 
 async def tcp_echo_client(func, args, exec_type, loop):
@@ -101,7 +101,7 @@ def count_len_web(url, delay):
 def func_inner_call():
     print(death_list(100))
     print(death_list(200))
-    print(factorial(25))
+    print(factorial1(25))
     print(make_db(789))
 
 
@@ -115,13 +115,13 @@ def gen_collatz(limit, loop):
 def gen_factorials(start, stop, loop):
     i = start
     while i <= stop:
-        yield factorial, (i,), loop
+        yield factorial1, (i,), loop
         i+=1
 
 
 async def main():
     loop = asyncio.get_event_loop()
-    t = asyncio.create_task(tcp_echo_client(factorial, (100000,), 'THREAD', loop))
+    t = asyncio.create_task(tcp_echo_client(factorial1, (100000,), 'THREAD', loop))
     await asyncio.gather(t)
     # tasks = [asyncio.create_task(each)
     #          for each in [
@@ -155,17 +155,24 @@ async def main():
 
 if __name__ == '__main__':
     import time
+    from concurrent.futures import ThreadPoolExecutor
+    tpe = ThreadPoolExecutor()
     start = time.monotonic()
-    # asyncio.run(main())
-    # print(time.monotonic() - start)
 
-    send_func(factorial1, (100000,), 'THREAD')
-    send_func(factorial1, (100000,), 'PROCESS')
-    send_func(factorial1, (100000,), 'PROCESS')
-    send_func(factorial1, (100000,), 'PROCESS')
-    send_func(factorial1, (100000,), 'PROCESS')
-    send_func(factorial1, (100000,), 'PROCESS')
-    send_func(factorial1, (100000,), 'PROCESS')
+    t = tpe.map(send_func,
+
+                (factorial1 for i in range(1)),
+                ((100000,) for i in range(1)),
+                ('PROCESS' for i in range(1)),
+            )
+
+    # send_func(factorial1, (100000,), 'THREAD')
+    # send_func(factorial1, (100000,), 'PROCESS')
+    # send_func(factorial1, (100000,), 'PROCESS')
+    # send_func(factorial1, (100000,), 'PROCESS')
+    # send_func(factorial1, (100000,), 'PROCESS')
+    # send_func(factorial1, (100000,), 'PROCESS')
+    # send_func(factorial1, (100000,), 'PROCESS')
     print(f'duration: {time.monotonic() - start}')
     # start = time.monotonic()
     # for i in range(100001):
