@@ -1,29 +1,44 @@
 import asyncio
 import concurrent
+import logging
+import time
 from concurrent.futures import ProcessPoolExecutor
+from dill import dumps, loads
+#from cloudpickle.cloudpickle import dumps, loads
+#from pathos.multiprocessing import ProcessPool
 
-import cloudpickle
 
 num = 0
 num_jobs = 25
-executor = ProcessPoolExecutor(max_workers=num_jobs)
+#executor = ProcessPool(max_workers=num_jobs)
 BUFF = 1024 * 10
 
 
-async def runner(func, *args, **kwargs):
+async def run_blocking_tasks(executor, func, args):
+    log = logging.getLogger('run_blocking_tasks')
+    log.info('starting')
+
+    log.info('creating executor tasks')
     loop = asyncio.get_event_loop()
-    loop.run_in_executor(concurrent.futures.ProcessPoolExecutor(), func, *args)
+    result = loop.run_in_executor(executor, func, args)
+    log.info('waiting for executor tasks')
+    completed, pending = await asyncio.gather(result)
+    results = [t.result() for t in completed]
+    log.info('results: {!r}'.format(results))
+
+    log.info('exiting')
+    return results
 
 
 async def handle_echo(reader, writer):
-    data = reader.read(BUFF)
-    recv_dict = cloudpickle.loads(data)
+    data = await reader.read(BUFF)
+    recv_dict = loads(data)
 
     func = recv_dict['func']
     args = recv_dict['args']
 
     loop = asyncio.get_event_loop()
-    print(*args)
+    print(f'args: {args}')
     print(f"exec_type: {recv_dict['exec_type']}")
     if recv_dict['exec_type'] == 'THREAD':
         task = loop.run_in_executor(concurrent.futures.ThreadPoolExecutor(), func, *args)
@@ -34,9 +49,10 @@ async def handle_echo(reader, writer):
         results = await asyncio.gather(task)
     else:
         results = func(*args)
+
     print(type(results))
     print(f'results size {results.__sizeof__()}')
-    serialized_results = cloudpickle.dumps(results)
+    serialized_results = dumps(results)
     print(serialized_results)
 
     writer.write(serialized_results)
@@ -56,5 +72,5 @@ async def main():
     async with server:
         await server.serve_forever()
 
-
 asyncio.run(main())
+

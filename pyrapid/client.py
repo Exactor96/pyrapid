@@ -1,10 +1,13 @@
 import asyncio
 import socket
+import time
+
 import requests
-import cloudpickle
+from dill import dumps, loads
 
 BUFF = 1024 * 10
-HOST = 'ip172-18-0-9-brc84ptim9m000c5ovug-8888.direct.labs.play-with-docker.com'
+#HOST = 'ip172-18-0-9-brc84ptim9m000c5ovug-8888.direct.labs.play-with-docker.com'
+HOST = 'localhost'
 PORT = 8888
 
 
@@ -42,11 +45,13 @@ def colatz(num):
     return res
 
 
-def factorial(num):
+def factorial1(num):
+    ts = time.monotonic()
+    print(f'num {num}')
     f = 1
     for i in range(1, num + 1):
         f *= i
-    return f'last_num: {f % 10} ,factorial_size: {f.__sizeof__()}'
+    return f'last_num: {f % 10} ,factorial_size: {f.__sizeof__()}, {time.monotonic() - ts}'
 
 
 def make_db(name):
@@ -57,11 +62,11 @@ def make_db(name):
 def send_func(func, args, exec_type):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     transfer_dict = {'func': func, 'args': args, 'exec_type': exec_type}
-    transfer_data = cloudpickle.dumps(transfer_dict)
+    transfer_data = dumps(transfer_dict)
     s.connect((HOST, PORT))
     s.send(transfer_data)
     result_data = s.recv(BUFF)
-    result = cloudpickle.loads(result_data)
+    result = loads(result_data)
     print(result)
 
 
@@ -70,7 +75,7 @@ async def tcp_echo_client(func, args, exec_type, loop):
                                                    loop=loop)
 
     transfer_dict = {'func': func, 'args': args, 'exec_type': exec_type}
-    transfer_data = cloudpickle.dumps(transfer_dict)
+    transfer_data = dumps(transfer_dict)
     writer.write(transfer_data)
     writer.close()
 
@@ -78,7 +83,7 @@ async def tcp_echo_client(func, args, exec_type, loop):
 
     print(result_data)
     if result_data:
-        result = cloudpickle.loads(result_data)
+        result = loads(result_data)
         print(result)
         return result
     else:
@@ -149,18 +154,19 @@ async def main():
     #     await asyncio.gather(task)
 
 if __name__ == '__main__':
-    # import time
-    # start = time.monotonic()
+    import time
+    start = time.monotonic()
     # asyncio.run(main())
     # print(time.monotonic() - start)
-    send_func(factorial, (100000,), 'PROCESS')
-    # send_func(factorial, (100000,), 'THREAD')
-    # send_func(factorial, (100000,), 'THREAD')
-    # send_func(factorial, (100000,), 'THREAD')
-    # send_func(factorial, (100000,), 'THREAD')
-    # send_func(factorial, (100000,), 'THREAD')
 
-
+    send_func(factorial1, (100000,), 'THREAD')
+    send_func(factorial1, (100000,), 'PROCESS')
+    send_func(factorial1, (100000,), 'PROCESS')
+    send_func(factorial1, (100000,), 'PROCESS')
+    send_func(factorial1, (100000,), 'PROCESS')
+    send_func(factorial1, (100000,), 'PROCESS')
+    send_func(factorial1, (100000,), 'PROCESS')
+    print(f'duration: {time.monotonic() - start}')
     # start = time.monotonic()
     # for i in range(100001):
     #     print(colatz(i))
