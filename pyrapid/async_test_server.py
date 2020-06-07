@@ -1,5 +1,6 @@
 import asyncio
 import os
+import platform
 import sys
 import time
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
@@ -8,7 +9,7 @@ from cloudpickle.cloudpickle import dumps, loads
 
 pExecutor = ProcessPoolExecutor(max_workers=os.cpu_count())
 tExecutor = ThreadPoolExecutor(max_workers=os.cpu_count())
-PORT = 8888
+PORT = os.environ.get('PORT') or 8888
 BUFF = 1024 * 10
 
 
@@ -68,6 +69,7 @@ async def handle_tasks(reader, writer):
     results = {
         'result': result,
         'duration': time_end - time_start,
+        'hostname': platform.node()
     }
 
     serialized_result = dumps(results)
