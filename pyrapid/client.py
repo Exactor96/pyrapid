@@ -26,6 +26,7 @@ def send_func(func, args, exec_type, commands_dict=None):
     print(result)
     return result
 
+
 if __name__ == '__main__':
     import time
     from concurrent.futures import ThreadPoolExecutor
