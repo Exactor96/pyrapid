@@ -1,0 +1,22 @@
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.003784091999933'], 'duration': 7.004921892999846, 'hostname': '32fa4f08acd6'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.029199240000253'], 'duration': 7.030367414000011, 'hostname': '32fa4f08acd6'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.074043064000307'], 'duration': 7.075314773000173, 'hostname': '32fa4f08acd6'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.078409146000013'], 'duration': 7.080113918000279, 'hostname': '63fd0c87126c'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.095613302999936'], 'duration': 7.097172342999784, 'hostname': '32fa4f08acd6'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.1042423960007'], 'duration': 7.105532477999986, 'hostname': '63fd0c87126c'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.1204332649995195'], 'duration': 7.121817059000023, 'hostname': '63fd0c87126c'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.163132458000291'], 'duration': 7.1645112739997785, 'hostname': '63fd0c87126c'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.159368059999906'], 'duration': 7.166429894999965, 'hostname': '32fa4f08acd6'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.187510239999938'], 'duration': 7.188921463999577, 'hostname': '63fd0c87126c'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.197607746000358'], 'duration': 7.1988929710000775, 'hostname': '32fa4f08acd6'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.198757750000368'], 'duration': 7.200453680000464, 'hostname': '63fd0c87126c'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.211622294000335'], 'duration': 7.213475518999985, 'hostname': '32fa4f08acd6'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.214551394999944'], 'duration': 7.216438486999323, 'hostname': '63fd0c87126c'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.780869984999299'], 'duration': 7.783859070999824, 'hostname': '2a801849c629'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.781689637999989'], 'duration': 7.785259464999399, 'hostname': '2a801849c629'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.7880808640002215'], 'duration': 7.791712404999998, 'hostname': '2a801849c629'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.791116383000372'], 'duration': 7.793673197999851, 'hostname': '2a801849c629'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.796243468000284'], 'duration': 7.799709679999978, 'hostname': '2a801849c629'}
+{'result': ['last_num: 0 ,factorial_size: 202252, 7.81188829400071'], 'duration': 7.814513768999859, 'hostname': '2a801849c629'}
+distributed duration: 7.910193321999941
+local sync duration: 43.73418830999981
