@@ -43,7 +43,7 @@ def factorial1(num):
     f = 1
     for i in range(1, num + 1):
         f *= i
-    return f'last_num: {f % 10} ,factorial_size: {f.__sizeof__()}, {time.monotonic() - ts}'
+    return f % 10
 
 
 def make_db(name):

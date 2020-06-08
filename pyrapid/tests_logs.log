@@ -1,0 +1,110 @@
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: requests in /usr/lib/python3/dist-packages (2.22.0)
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: psycopg2-binary in /home/exactor/.local/lib/python3.8/site-packages (2.8.5)
+Start Correctness Testing
+----------
+Имя теста: Расчет факториала числа 1000
+Описание теста: Расчет факториала от числа 1000 и возврат строки с последним числом и размером числа в байтах
+----------
+Accepted data: {'result': ['last_num: 0 ,factorial_size: 1164'], 'duration': 0.0015909230005490826, 'hostname': 'cbadeb0c3a2d'}
+Полученные результаты совпадают?: True
+
+local_result:  last_num: 0 ,factorial_size: 1164
+remote_result: last_num: 0 ,factorial_size: 1164
+----------
+Расчет факториала числа 1000 Закончен!
+----------
+
+----------
+Имя теста: Создание файла и подсчет хэш суммы этого файла
+Описание теста: Создает файл tmp.txt, записывает в него переданные данные и возвращает хэш сумму
+----------
+Accepted data: {'result': ['2a600ef1c3ae7f2b2da44783a96f5cfb'], 'duration': 0.001243586999407853, 'hostname': 'cbadeb0c3a2d'}
+Полученные результаты совпадают?: True
+
+local_result:  2a600ef1c3ae7f2b2da44783a96f5cfb
+remote_result: 2a600ef1c3ae7f2b2da44783a96f5cfb
+----------
+Создание файла и подсчет хэш суммы этого файла Закончен!
+----------
+
+----------
+Имя теста: Установка requests и получение версии модуля
+Описание теста: Установка модуля из скрипта, импорт этого модуля (не стандартый импорт), возврат версии этого модуля
+----------
+Accepted data: {'result': ['2.23.0'], 'duration': 0.6070394580001448, 'hostname': 'cbadeb0c3a2d'}
+Полученные результаты совпадают?: False
+
+local_result:  2.22.0
+remote_result: 2.23.0
+----------
+Установка requests и получение версии модуля Закончен!
+----------
+
+----------
+Имя теста: Стандратный импорт предустановленной библиотеки
+Описание теста: Функиця импортирует (стандартый импорт) модуль requests и возвращает версию
+----------
+Accepted data: {'result': ['2.23.0'], 'duration': 0.001431014999980107, 'hostname': 'cbadeb0c3a2d'}
+Полученные результаты совпадают?: False
+
+local_result:  2.22.0
+remote_result: 2.23.0
+----------
+Стандратный импорт предустановленной библиотеки Закончен!
+----------
+
+----------
+Имя теста: Отправка запроса на сайт кафедры АВТ
+Описание теста: Отправка запроса Get запроса по URL и возврат статуса ответа и заголовков
+----------
+Accepted data: {'result': [(200, {'Server': 'nginx/1.16.1', 'Date': 'Mon, 08 Jun 2020 06:15:25 GMT', 'Content-Type': 'text/html', 'Transfer-Encoding': 'chunked', 'Connection': 'keep-alive', 'Vary': 'Accept-Encoding', 'Content-Encoding': 'gzip'})], 'duration': 0.15391125699898112, 'hostname': 'cbadeb0c3a2d'}
+Полученные результаты совпадают?: True
+
+local_result:  (200, {'Server': 'nginx/1.16.1', 'Date': 'Mon, 08 Jun 2020 06:15:25 GMT', 'Content-Type': 'text/html', 'Transfer-Encoding': 'chunked', 'Connection': 'keep-alive', 'Vary': 'Accept-Encoding', 'Content-Encoding': 'gzip'})
+remote_result: (200, {'Server': 'nginx/1.16.1', 'Date': 'Mon, 08 Jun 2020 06:15:25 GMT', 'Content-Type': 'text/html', 'Transfer-Encoding': 'chunked', 'Connection': 'keep-alive', 'Vary': 'Accept-Encoding', 'Content-Encoding': 'gzip'})
+----------
+Отправка запроса на сайт кафедры АВТ Закончен!
+----------
+
+----------
+Имя теста: Вызов внутри функции
+Описание теста: Вызов пользовательской функции внутри другой функции
+----------
+Accepted data: {'result': ['last_num: 0 ,factorial_size: 28'], 'duration': 0.0014329460009321338, 'hostname': 'cbadeb0c3a2d'}
+Полученные результаты совпадают?: True
+
+local_result:  last_num: 0 ,factorial_size: 28
+remote_result: last_num: 0 ,factorial_size: 28
+----------
+Вызов внутри функции Закончен!
+----------
+
+----------
+Имя теста: Вызов функции факториала из math
+Описание теста: Вызов функции факториала без явного импорта модуля math
+----------
+Accepted data: {'result': [6], 'duration': 0.0013945350001449697, 'hostname': 'cbadeb0c3a2d'}
+Полученные результаты совпадают?: True
+
+local_result:  6
+remote_result: 6
+----------
+Вызов функции факториала из math Закончен!
+----------
+
+----------
+Имя теста: Работа с базой данных Postgresql
+Описание теста: Работа с базой данных Postgresql, переданы доступы на подключение, список sql команд, имя таблицы,
+    функиця создает таблицу, заполняет данными и возвращает результат
+----------
+Accepted data: {'result': [[(0, 'qwe0'), (1, 'qwe1'), (2, 'qwe2')]], 'duration': 0.6115518919996248, 'hostname': 'cbadeb0c3a2d'}
+Полученные результаты совпадают?: True
+
+local_result:  [(0, 'qwe0'), (1, 'qwe1'), (2, 'qwe2')]
+remote_result: [(0, 'qwe0'), (1, 'qwe1'), (2, 'qwe2')]
+----------
+Работа с базой данных Postgresql Закончен!
+----------
+

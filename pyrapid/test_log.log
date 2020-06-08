@@ -1,0 +1,44 @@
+Start Correctness Testing
+----------
+Имя теста:Расчет факториала числа 1000
+Описание теста:Расчет факториала от числа 1000 и возврат строки с последним числом и размером числа в байтах
+----------
+Accepted data: {'result': ['last_num: 0 ,factorial_size: 1164'], 'duration': 0.002199029000621522, 'hostname': 'cbadeb0c3a2d'}
+local_result:  last_num: 0 ,factorial_size: 1164
+remote_result: last_num: 0 ,factorial_size: 1164
+----------
+Расчет факториала числа 1000 Закончен!
+----------
+----------
+Имя теста:Создание файла и подсчет хэш суммы этого файла
+Описание теста:Создает файл tmp.txt, записывает в него переданные данные и возвращает хэш сумму
+----------
+Accepted data: {'result': ['2a600ef1c3ae7f2b2da44783a96f5cfb'], 'duration': 0.003081897999436478, 'hostname': 'cbadeb0c3a2d'}
+local_result:  2a600ef1c3ae7f2b2da44783a96f5cfb
+remote_result: 2a600ef1c3ae7f2b2da44783a96f5cfb
+----------
+Создание файла и подсчет хэш суммы этого файла Закончен!
+----------
+----------
+Имя теста:
+Описание теста:Установка модуля из скрипта, импорт этого модуля (не стандартый импорт), возврат версии этого модуля
+----------
+Defaulting to user installation because normal site-packages is not writeable
+Requirement already satisfied: requests in /usr/lib/python3/dist-packages (2.22.0)
+Accepted data: {'result': ['2.23.0'], 'duration': 3.764880494000863, 'hostname': 'cbadeb0c3a2d'}
+local_result:  2.22.0
+remote_result: 2.23.0
+----------
+ Закончен!
+----------
+----------
+Имя теста:
+Описание теста:Функиця импортирует (стандартый импорт) модуль requests и возвращает версию
+----------
+Accepted data: {'result': ['2.23.0'], 'duration': 0.10568123099983495, 'hostname': 'cbadeb0c3a2d'}
+local_result:  2.22.0
+remote_result: 2.23.0
+----------
+ Закончен!
+----------
+

@@ -1,8 +1,8 @@
 import hashlib
+import math
 import socket
 import subprocess
 import sys
-import time
 
 from cloudpickle import dumps, loads
 
@@ -10,6 +10,10 @@ BUFF = 1024 * 10
 
 HOST = '192.168.1.181'
 PORT = 8888
+
+
+def assert_equal(expected, recived):
+    return type(expected) == type(recived) and expected == recived
 
 
 def send_func(func, args, exec_type, commands_dict=None):
@@ -40,7 +44,6 @@ def create_file(data: bytes):
 
 def factorial1(num):
     """Расчет факториала от числа 1000 и возврат строки с последним числом и размером числа в байтах"""
-    ts = time.monotonic()
     f = 1
     for i in range(1, num + 1):
         f *= i
@@ -55,7 +58,7 @@ def install_req(package):
     return res
 
 
-def side_import():
+def inside_import():
     """Функиця импортирует (стандартый импорт) модуль requests и возвращает версию"""
     import requests
     return requests.__version__
@@ -68,22 +71,47 @@ def test_request(url):
     return r.status_code, r.headers
 
 
+def inner_call_another():
+    """Вызов пользовательской функции внутри другой функции"""
+    return factorial1(5)
+
+
+def factorial_without_inside_import(num):
+    """Вызов функции факториала без явного импорта модуля math"""
+    return math.factorial(num)
+
+
+def postgres_connection(credentials_dict, sql_list, table_name):
+    """Работа с базой данных Postgresql, переданы доступы на подключение, список sql команд, имя таблицы,
+    функиця создает таблицу, заполняет данными и возвращает результат"""
+    subprocess.check_call([sys.executable, "-m", "pip", "install", 'psycopg2-binary'])
+    import psycopg2
+    connection = psycopg2.connect(**credentials_dict)
+    cursor = connection.cursor()
+    for sql in sql_list:
+        cursor.execute(sql.format(table_name))
+    res = cursor.fetchall()
+    cursor.execute(f'drop table {table_name};')
+    return res
+
+
 def test_case(func, args, test_name, description=None):
     print('-' * 10)
-    print(f'Имя теста:{test_name}')
+    print(f'Имя теста: {test_name}')
     if description:
-        print(f'Описание теста:{description}')
+        print(f'Описание теста: {description}')
     elif func.__doc__:
-        print(f'Описание теста:{func.__doc__}')
+        print(f'Описание теста: {func.__doc__}')
     print('-' * 10)
     local_result = func(*args)
     remote_result = send_func(func, args, 'PROCESS').get('result')[0]
-    assert local_result, remote_result
-    print(f"local_result:  {local_result}")
+    print(f'Полученные результаты совпадают?: {assert_equal(local_result, remote_result)}')
+    print(f"\nlocal_result:  {local_result}")
     print(f'remote_result: {remote_result}')
     print('-' * 10)
     print(test_name, "Закончен!")
     print('-' * 10)
+    print()
 
 
 TEST_CASES = (
@@ -96,14 +124,28 @@ TEST_CASES = (
         install_req, ('requests',), 'Установка requests и получение версии модуля'
     ),
     (
-        side_import, (), 'Стандратный импорт предустановленной библиотеки'
+        inside_import, (), 'Стандратный импорт предустановленной библиотеки'
     ),
     (
         test_request, ('http://atpp.vstu.edu.ru/avt/',), 'Отправка запроса на сайт кафедры АВТ'
     ),
-    (),
-    (),
-    (),
+    (
+        inner_call_another, (), 'Вызов внутри функции'
+    ),
+    (
+        factorial_without_inside_import, (3,), 'Вызов функции факториала из math',
+    ),
+    (
+        postgres_connection,
+        ({'dbname': 'postgres', 'user': 'postgres', 'password': 'toor', 'host': '192.168.1.181'},
+         ['create table {} ( id bigserial primary key, txt varchar(20));',
+          "insert into {} values(0,'qwe0');",
+          "insert into {} values(1,'qwe1');",
+          "insert into {} values(2,'qwe2');",
+          'select * from {};'], 'testng3'
+         ), 'Работа с базой данных Postgresql'
+
+    ),
 )
 
 if __name__ == '__main__':

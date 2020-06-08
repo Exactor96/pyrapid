@@ -1,0 +1,12 @@
+----------
+Имя теста: Работа с базой данных Postgresql
+----------
+Accepted data: {'result': [[(0, 'qwe0'), (1, 'qwe1'), (2, 'qwe2')]], 'duration': 0.0401538049991359, 'hostname': 'cbadeb0c3a2d'}
+Полученные результаты совпадают?: True
+
+local_result:  [(0, 'qwe0'), (1, 'qwe1'), (2, 'qwe2')]
+remote_result: [(0, 'qwe0'), (1, 'qwe1'), (2, 'qwe2')]
+----------
+Работа с базой данных Postgresql Закончен!
+----------
+
